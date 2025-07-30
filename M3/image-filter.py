@@ -45,7 +45,8 @@ def blur(image, radius=2):
                           j - radius : j + radius + 1]
             print(block)
             new_pix = block.mean(axis=(0,1))
-            print(new_pix)
+            print(block.sum(axis=(1,2)))
+            # print(new_pix)
             px2[i, j] = new_pix.astype(np.uint8)
 
     return px2
@@ -131,12 +132,12 @@ img = read_image("download.jpg")
 new_arr = np.arange(75).reshape(5, 5, 3)
 
 blur_res = blur(new_arr, 2)
-medi_res = median(img, 5)
-edge_res = edge(new_arr, 2)
-eg = edge_gray(img, radius=1)
+# medi_res = median(img, 5)
+# edge_res = edge(new_arr, 2)
+# eg = edge_gray(img, radius=1)
 
 # display_image(img,title="original")
 # display_image(blur_res, title="Blur")
 # display_image(medi_res, title="Median")
 # display_image(edge_res, title="Edge")
-display_image(eg, title="Edges")
+# display_image(eg, title="Edges")
