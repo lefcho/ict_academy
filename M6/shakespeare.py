@@ -1,5 +1,6 @@
 import pandas as pd
 from nltk import sent_tokenize
+import matplotlib.pyplot as plt
 
 
 file_path = "M6/shakespeare.txt"
@@ -23,20 +24,39 @@ data['Is Q'] = data['Sentence'].str.endswith('?')
 data['Is Ex'] = data['Sentence'].str.endswith('!')
 data['Is Norm'] = ~(data['Is Q'] | data['Is Ex'])
 
-# print(data.head())
-
 avg_q = data.query('`Is Q` == True')['Word Count'].mean()
 avg_e = data.query('`Is Ex` == True')['Word Count'].mean()
 avg_n = data.query('`Is Norm` == True')['Word Count'].mean()
 
-summary = pd.DataFrame({
-    'Total Sentences': [len(data)],
-    '% Normal': [data['Is Norm'].mean() * 100],
-    '% Questions': [data['Is Q'].mean() * 100],
-    '% Exclamations': [data['Is Ex'].mean() * 100],
-    'Avg Words (N)': [avg_n],
-    'Avg Words (Q)': [avg_q],
-    'Avg Words (Ex)': [avg_e],
-})
+# print(data.head())
+counts = [data['Is Norm'].sum(), data['Is Ex'].sum(), data['Is Q'].sum()]
+labels = ['Normal', 'Exclamations', 'Questions']
 
-print(summary)
+
+plt.subplot(2, 1, 1 )
+plt.pie(counts, labels=labels, autopct="%1.1f%%")
+plt.title("Sentence Types in Shakespeare Text")
+
+
+plt.subplot(2, 1, 2 )
+plt.title("Words in Sent Types")
+plt.bar(labels, [avg_n, avg_e, avg_q])
+plt.show()
+
+
+# total_sent = len(data)
+# norm_perc = data['Is Norm'].mean() * 100
+# q_perc = data['Is Q'].mean() * 100
+# ex_perc = data['Is Ex'].mean() * 100
+
+# summary = pd.DataFrame({
+#     'Total Sentences': [total_sent],
+#     '% Normal': [norm_perc],
+#     '% Questions': [q_perc],
+#     '% Exclamations': [ex_perc],
+#     'Avg Words (N)': [avg_n],
+#     'Avg Words (Q)': [avg_q],
+#     'Avg Words (Ex)': [avg_e],
+# })
+
+# print(summary)
